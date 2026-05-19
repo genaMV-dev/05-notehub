@@ -13,23 +13,34 @@ const Modal = ({
   children,
 }: PropsWithChildren<ModalProps>) => {
   useEffect(() => {
+    if (!isOpen) return
+
     const escape = (event: KeyboardEvent) => {
       if (event.key === `Escape`) {
         onClose()
       }
     }
+
     document.addEventListener(`keydown`, escape)
     document.body.style.overflow = "hidden"
+
     return () => {
       document.removeEventListener(`keydown`, escape)
       document.body.style.overflow = "auto"
     }
-  }, [onClose])
+  }, [isOpen, onClose])
 
-  if (!isOpen) return
+  if (!isOpen) return null
   return createPortal(
-    <div className={css.backdrop} onClick={onClose} role="dialog" aria-modal="true">
-      <div className={css.modal} onClick={(e) => e.stopPropagation()}>{children}</div>
+    <div
+      className={css.backdrop}
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+    >
+      <div className={css.modal} onClick={(e) => e.stopPropagation()}>
+        {children}
+      </div>
     </div>,
     document.body,
   )

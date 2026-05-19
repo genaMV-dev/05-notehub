@@ -1,7 +1,7 @@
 import { useId } from "react"
 import css from "./NoteForm.module.css"
 import { ErrorMessage, Field, Form, Formik } from "formik"
-import { createNotes } from "../../services/noteService"
+import { createNote } from "../../services/noteService"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import type { NewNoteBody } from "../../types/note"
 import * as Yup from "yup"
@@ -23,11 +23,11 @@ interface NoteForm {
   tag: `Todo` | `Work` | `Personal` | `Meeting` | `Shopping`
 }
 
-interface NoteFormProps{
-    onClose: () => void
+interface NoteFormProps {
+  onClose: () => void
 }
 
-const NoteForm = ({onClose}: NoteFormProps) => {
+const NoteForm = ({ onClose }: NoteFormProps) => {
   const queryClient = useQueryClient()
   const fieldId = useId()
 
@@ -38,11 +38,11 @@ const NoteForm = ({onClose}: NoteFormProps) => {
   }
 
   const mutation = useMutation({
-    mutationFn: (newNote: NewNoteBody) => createNotes(newNote),
+    mutationFn: (newNote: NewNoteBody) => createNote(newNote),
     onSuccess: () => {
-        queryClient.invalidateQueries({queryKey: [`notes`]})
-        onClose()
-    }
+      queryClient.invalidateQueries({ queryKey: [`notes`] })
+      onClose()
+    },
   })
 
   const handleSubmit = (values: NoteForm) => {

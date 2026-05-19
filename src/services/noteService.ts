@@ -25,7 +25,7 @@ export async function getNotes({
     params: {
       page,
       perPage,
-      search: searchQuery
+      search: searchQuery,
     },
     headers: {
       Authorization: `Bearer ${VITE_NOTEHUB_TOKEN}`,
@@ -35,8 +35,8 @@ export async function getNotes({
   return res.data
 }
 
-export async function createNotes(newNote: NewNoteBody) {
-  const res = await axios.post<NoteApiResponse>(`${BASE_URL}/notes`, newNote, {
+export async function createNote(newNote: NewNoteBody): Promise<Note> {
+  const res = await axios.post<Note>(`${BASE_URL}/notes`, newNote, {
     headers: {
       Authorization: `Bearer ${VITE_NOTEHUB_TOKEN}`,
     },
@@ -45,9 +45,8 @@ export async function createNotes(newNote: NewNoteBody) {
   return res.data
 }
 
-
-export async function deleteNote(noteId: string) {
-  const res = await axios.delete<NoteApiResponse>(`${BASE_URL}/notes/${noteId}`, {
+export async function deleteNote(noteId: string): Promise<Note> {
+  const res = await axios.delete<Note>(`${BASE_URL}/notes/${noteId}`, {
     headers: {
       Authorization: `Bearer ${VITE_NOTEHUB_TOKEN}`,
     },
