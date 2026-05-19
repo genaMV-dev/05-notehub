@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import css from "./App.module.css"
 import NoteList from "../NoteList/NoteList"
 import { useQuery } from "@tanstack/react-query"
@@ -15,8 +15,11 @@ const App = () => {
   const [inputValue, setInputValue] = useState("")
   const [searchQuery, setSearchQuery] = useState(``)
 
+  const prevDataRef = useRef<NoteApiResponse | null>(null)
+
   const debouncedSetSearchQuery = useDebouncedCallback((value: string) => {
     setSearchQuery(value)
+    setPage(1)
   }, 300)
 
   const handleSearchChange = (value: string) => {
@@ -24,27 +27,20 @@ const App = () => {
     debouncedSetSearchQuery(value)
   }
 
-  useEffect(() => {
-    setPage(1)
-  }, [searchQuery, setPage])
-
-  const { data, isFetching } = useQuery<NoteApiResponse, Error>({
+  const { data } = useQuery<NoteApiResponse, Error>({
     queryKey: [`notes`, page, searchQuery],
     queryFn: () =>
       getNotes({ page: page, perPage: 10, searchQuery: searchQuery }),
-    placeholderData: { notes: [], totalPages: 0 },
+    placeholderData: () => prevDataRef.current ?? { notes: [], totalPages: 0 },
   })
-
-  const [prevData, setPrevData] = useState<NoteApiResponse | null>(null)
 
   useEffect(() => {
     if (data) {
-      setPrevData(data)
+      prevDataRef.current = data
     }
   }, [data])
 
-  const displayData: NoteApiResponse =
-    isFetching && prevData ? prevData : (data ?? { notes: [], totalPages: 0 })
+  const displayData: NoteApiResponse = data ?? { notes: [], totalPages: 0 }
 
   const onChangePage = (page: number) => {
     setPage(page)
