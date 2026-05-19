@@ -1,9 +1,9 @@
 import { useId } from "react"
 import css from "./NoteForm.module.css"
 import { ErrorMessage, Field, Form, Formik } from "formik"
-import { createNotes } from "../services/noteService"
+import { createNotes } from "../../services/noteService"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { NewNoteBody } from "../types/note"
+import type { NewNoteBody } from "../../types/note"
 import * as Yup from "yup"
 
 const NoteSchema = Yup.object({

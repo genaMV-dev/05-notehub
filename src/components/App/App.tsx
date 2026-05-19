@@ -1,5 +1,4 @@
 import { useState } from "react"
-import { getNotes } from "../services/noteService"
 import css from "./App.module.css"
 import NoteList from "../NoteList/NoteList"
 import { useQuery } from "@tanstack/react-query"
@@ -8,6 +7,7 @@ import Modal from "../Modal/Modal"
 import NoteForm from "../NoteForm/NoteForm"
 import SearchBox from "../SearchBox/SearchBox"
 import { useDebouncedCallback } from 'use-debounce';
+import { getNotes } from "../../services/noteService"
 
 const App = () => {
   const [page, setPage] = useState(1)
