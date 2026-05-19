@@ -2,7 +2,7 @@ import ReactPaginateModule from "react-paginate"
 import css from "./Pagination.module.css"
 
 import type { ComponentType } from "react"
-import type { NoteApiResponse } from "../services/noteService"
+import type { NoteApiResponse } from "../../services/noteService"
 
 type ModuleWithDefault<T> = { default: T }
 
